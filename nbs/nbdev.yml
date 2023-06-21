@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "database_compendium"
+  site-url: "https://Autonomy-Data-Unit.github.io/database_compendium"
+  description: "Collecting, storing, and exploring dataset metadata."
+  repo-branch: main
+  repo-url: "https://github.com/Autonomy-Data-Unit/database_compendium"
