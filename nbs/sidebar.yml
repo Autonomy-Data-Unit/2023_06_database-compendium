@@ -4,3 +4,5 @@ website:
       - index.ipynb
       - 00_ONS_scraper_functions.ipynb
       - 01_Nomis_scraper_functions.ipynb
+      - 02_insolvency_stats_scrapers.ipynb
+      - 03_police_data_api_scrapers.ipynb
