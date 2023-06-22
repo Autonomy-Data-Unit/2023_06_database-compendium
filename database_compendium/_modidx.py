@@ -5,5 +5,7 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://Autonomy-Data-Unit.github.io',
                 'git_url': 'https://github.com/Autonomy-Data-Unit/database_compendium',
                 'lib_path': 'database_compendium'},
-  'syms': { 'database_compendium.core': { 'database_compendium.core.get_qualityOutcomes_uniqueColumnValues': ( 'nhs_quality&outcomes_scrapers.html#get_qualityoutcomes_uniquecolumnvalues',
+  'syms': { 'database_compendium.core': { 'database_compendium.core.get_NHS_qualityOutcomes': ( 'nhs_quality&outcomes_scrapers.html#get_nhs_qualityoutcomes',
+                                                                                                'database_compendium/core.py'),
+                                          'database_compendium.core.get_qualityOutcomes_uniqueColumnValues': ( 'nhs_quality&outcomes_scrapers.html#get_qualityoutcomes_uniquecolumnvalues',
                                                                                                                'database_compendium/core.py')}}}
