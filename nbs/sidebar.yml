@@ -3,3 +3,4 @@ website:
     contents:
       - index.ipynb
       - 00_ONS_scraper_functions.ipynb
+      - 01_Nomis_scraper_functions.ipynb

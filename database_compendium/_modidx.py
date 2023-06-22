@@ -5,4 +5,4 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://Autonomy-Data-Unit.github.io',
                 'git_url': 'https://github.com/Autonomy-Data-Unit/database_compendium',
                 'lib_path': 'database_compendium'},
-  'syms': {'database_compendium.core': {'database_compendium.core.foo': ('core.html#foo', 'database_compendium/core.py')}}}
+  'syms': {'database_compendium.core': {}}}
