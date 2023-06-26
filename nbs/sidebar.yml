@@ -7,3 +7,4 @@ website:
       - 02_insolvency_stats_scrapers.ipynb
       - 03_police_data_api_scrapers.ipynb
       - 04_NHS_Quality&Outcomes_scrapers.ipynb
+      - 0x_Embeddings_analysis.ipynb
