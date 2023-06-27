@@ -6,4 +6,8 @@ d = { 'settings': { 'branch': 'main',
                 'git_url': 'https://github.com/Autonomy-Data-Unit/database_compendium',
                 'lib_path': 'database_compendium'},
   'syms': { 'database_compendium.core': { 'database_compendium.core.find_identical_cols': ( 'matching_columns.html#find_identical_cols',
-                                                                                            'database_compendium/core.py')}}}
+                                                                                            'database_compendium/core.py'),
+                                          'database_compendium.core.find_similar_cols': ( 'matching_columns.html#find_similar_cols',
+                                                                                          'database_compendium/core.py'),
+                                          'database_compendium.core.plot_network': ( 'matching_columns.html#plot_network',
+                                                                                     'database_compendium/core.py')}}}
