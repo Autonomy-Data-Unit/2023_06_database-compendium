@@ -5,7 +5,5 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://Autonomy-Data-Unit.github.io',
                 'git_url': 'https://github.com/Autonomy-Data-Unit/database_compendium',
                 'lib_path': 'database_compendium'},
-  'syms': { 'database_compendium.core': { 'database_compendium.core.cos_similarity': ( 'embeddings_analysis.html#cos_similarity',
-                                                                                       'database_compendium/core.py'),
-                                          'database_compendium.core.svm_similarity': ( 'embeddings_analysis.html#svm_similarity',
-                                                                                       'database_compendium/core.py')}}}
+  'syms': { 'database_compendium.core': { 'database_compendium.core.find_identical_cols': ( 'matching_columns.html#find_identical_cols',
+                                                                                            'database_compendium/core.py')}}}
