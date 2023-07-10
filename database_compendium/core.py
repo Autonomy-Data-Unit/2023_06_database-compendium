@@ -3,6 +3,13 @@
 # %% auto 0
 __all__ = ['find_identical_cols', 'find_similar_cols', 'plot_network']
 
+# %% ../nbs/06_matching_columns.ipynb 3
+import pandas as pd
+import plotly.express as px
+from sklearn.decomposition import PCA
+import re
+import ast
+
 # %% ../nbs/06_matching_columns.ipynb 8
 def find_identical_cols(cols_list, compare_idx):
     """
