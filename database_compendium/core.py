@@ -74,31 +74,34 @@ def find_similar_cols(cols_list, compare_idx):
             
 
 # %% ../nbs/06_matching_columns.ipynb 19
-def plot_network(G):
+from math import sqrt
+
+def plot_network(G, show_edges=True):
     """ Plot network diagram """
-    node_sizes = [min(len(list(G.edges(node)))*8, 12) for node in G.nodes()]
+    node_sizes = [min(len(list(G.edges(node)))*0.2+6, 12) for node in G.nodes()]
     
     # Set the positions of the nodes
-    pos = nx.spring_layout(G)
+    pos = nx.spring_layout(G, k=1.2/sqrt(len(node_sizes)), seed=42)
     
-    # Create a list to store the edge traces
-    edge_traces = []
-    
-    # Create an edge trace for each edge with varying width
-    for u, v, d in G.edges(data=True):
-        x0, y0 = pos[u]
-        x1, y1 = pos[v]
-        width = d['weight']
-            
-        edge_trace = go.Scatter(
-            x=[x0, x1, None],
-            y=[y0, y1, None],
-            line=dict(width=width, color='gray'),
-            hoverinfo='none',
-            mode='lines'
-        )
-        
-        edge_traces.append(edge_trace)
+    if show_edges:
+        # Create a list to store the edge traces
+        edge_traces = []
+
+        # Create an edge trace for each edge with varying width
+        for u, v, d in G.edges(data=True):
+            x0, y0 = pos[u]
+            x1, y1 = pos[v]
+            width = d['weight']*0.5
+
+            edge_trace = go.Scatter(
+                x=[x0, x1, None],
+                y=[y0, y1, None],
+                line=dict(width=width, color='gray'),
+                hoverinfo='none',
+                mode='lines'
+            )
+
+            edge_traces.append(edge_trace)
     
     # Create a node trace
     node_trace = go.Scatter(
@@ -108,13 +111,18 @@ def plot_network(G):
         mode='markers',
         hoverinfo='text',
         marker=dict(
-            color='blue',
+            color=node_sizes,
             size=node_sizes # The size of the node depends on the number of edges connected to it
         )
     )
     
+    if show_edges:
+        data = edge_traces + [node_trace]
+    else:
+        data = node_trace
+    
     # Create the network graph figure
-    fig = go.Figure(data=edge_traces + [node_trace],
+    fig = go.Figure(data=data,
                     layout=go.Layout(
                         title='',
                         showlegend=False,
@@ -128,3 +136,5 @@ def plot_network(G):
     # Display the network graph
     fig.layout.height = 750
     fig.show()
+    
+    return fig
