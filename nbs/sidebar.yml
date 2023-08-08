@@ -9,8 +9,12 @@ website:
       - 04_NHS_Quality&Outcomes_scrapers.ipynb
       - 05_Embeddings_analysis.ipynb
       - 06_matching_columns.ipynb
-      - network.html
-      - network_top5.html
-      - network_top5_SVMsimilarity.html
-      - network_top8_bottomHalfRemoved.html
-      - sim_col_net_diagram.html
+      - test_env.ipynb
+      - section: figures
+        contents:
+          - figures\net_oneDegreeSeperation.html
+          - figures\network.html
+          - figures\network_top5.html
+          - figures\network_top5_SVMsimilarity.html
+          - figures\network_top8_bottomHalfRemoved.html
+          - figures\sim_col_net_diagram.html

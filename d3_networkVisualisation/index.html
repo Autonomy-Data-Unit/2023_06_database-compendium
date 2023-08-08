@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="styles.css" rel="stylesheet" />
+
+        <meta name="viewport" content="width=device-width" />
+        <meta charset="utf-8" />
+        <meta name="author" content="Rowan Trickett-Tappenden" />
+
+        <title>Front Page</title>
+        <script src="scripts.js" defer></script>
+    </head>
+    <body>
+        <div id="options-bar">
+            <div id="checkbox-container">
+                <label for="edges">Edges</label>
+                <input type="checkbox" name="edges" id="edges-checkbox" checked>
+            </div>
+            <div id="range-container">
+                <label for="minConStrength">Connection Threshold</label>
+                <input 
+                    type="range" 
+                    name="minConStrength" 
+                    id="minConStrength-range"
+                    title="How strong a connection between nodes must be before it is shown"
+                    min="0"
+                    max="10"
+                    value="10"
+                    step="0.25">
+            </div>
+            <div id="dropdown">
+                <select name="network-dataset", id="network-dataset">
+                    <option value="identicalColumns-method1">Identical Columns</option>
+                    <option value="identicalColumns-method2" selected="selected">Identical Columns Alt.</option>
+                    <option value="descriptionEmbeddings">Description Embeddings</option>
+                </select>
+            </div>
+            <div id="searchbar">
+                <input type="text" id="search" placeholder="Search..." title="Seach for a dataset" autocomplete="off">
+                <input type="submit" id="submit-search">
+            </div>
+            <button type="reset" id="resetButton">Reset</button>
+        </div>
+    </body>
+</html>

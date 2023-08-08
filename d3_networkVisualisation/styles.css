@@ -1,0 +1,37 @@
+html {
+    font-family: "Space Mono", monospace;
+    scroll-behavior: smooth;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+body {
+    background-color: #181818;
+}
+
+.hide-links {
+    display: none;
+}
+
+#options-bar {
+    display: flex;
+    flex-wrap: wrap;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 2rem;
+    z-index: 99;
+    width: 98vw;
+}
+
+#checkbox-container, 
+#range-container,
+#searchbar {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    display: flex;
+}
+
+#resetButton,
+#dropdown {
+    margin: 0.5rem 1rem 0.5rem 1rem;
+}
