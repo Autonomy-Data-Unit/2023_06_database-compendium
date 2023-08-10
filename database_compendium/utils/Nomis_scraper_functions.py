@@ -37,7 +37,7 @@ def get_nomis_datasets_titles_descriptions():
             nomis_datasets_descriptions.append(float('nan'))
 
     url = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json"
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     data = response.json()
     temp = data['structure']['keyfamilies']['keyfamily']
     nomis_datasets_names = []
@@ -101,7 +101,7 @@ def get_nomis_datasets_parameters():
     being the parameter categories and the values being the parameters.
     """
 
-    MAX_RETRIES = 5
+    MAX_RETRIES = 10
     
     url = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json"
 

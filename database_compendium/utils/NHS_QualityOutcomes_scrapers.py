@@ -27,9 +27,15 @@ def get_NHS_qualityOutcomes():
     response = requests.get(latest_dataset_url)
     soup = BeautifulSoup(response.text, 'html.parser')
     file_download_link = soup.find('div', {'id': 'resources'}).find_all('a')[0]['href']
+
+    long_description = soup.find('h2', {"id": "summary"}).findNext("div").text
+    
     
     r = requests.get(file_download_link)
     file = pd.ExcelFile(r.content)
+
+    title_sheet = file.sheet_names[0]
+    latest_release = file.parse(title_sheet).iloc[8, 1]
     
     dfs = {}
     for sheet in file.sheet_names[1:]:  # Ignore the first sheet as it just contains a list of titles for the other sheets
@@ -43,14 +49,15 @@ def get_NHS_qualityOutcomes():
         temp_df.columns = temp_df.iloc[0]
         dfs[title] = temp_df.iloc[1:].reset_index(drop=True) # save as df in dictionary
 
-    return dfs
+    return dfs, long_description, latest_release
 
 # %% ../../nbs/04_NHS_Quality&Outcomes_scrapers.ipynb 8
 def get_qualityOutcomes_uniqueColumnValues(data):
-    "Returns the unique, non-numeric column values given a dataframe"
+    "Returns the column titles and the unique, non-numeric column values given a dataframe"
+    cols = list(set(data.columns)) # removing duplicates from the column titles
     unq_cols = {}
     for i in range(len(data)):
         col_name = data.iloc[:, i].name
         if type((data.iloc[:, i])[0]) == str:
             unq_cols[col_name] = data.iloc[:, i].unique()
-    return unq_cols
+    return cols, unq_cols

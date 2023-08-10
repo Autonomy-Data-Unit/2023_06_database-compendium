@@ -107,10 +107,18 @@ def get_ONS_long_description():
     """
     api_url = "https://api.beta.ons.gov.uk/v1/datasets"
     description_L = []
+    MAX_RETRIES = 100
 
-    # Getting the qmi (Quality and Methodology Information) url
-    response = requests.get(api_url, params={"limit": 1000})
-    items = response.json()['items']
+    for i in range(MAX_RETRIES):
+        try:
+            # Getting the qmi (Quality and Methodology Information) url
+            response = requests.get(api_url, params={"limit": 1000})
+            items = response.json()['items']
+            break
+        except:
+            continue
+
+    
     i = 0
     for item in items:
 
