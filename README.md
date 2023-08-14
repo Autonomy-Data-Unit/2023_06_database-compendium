@@ -16,19 +16,24 @@ pip install database_compendium
 - BeautifulSoup library
 - re (Regular Expression) module
 - Math
+- numpy
 
 ## How to use
 
-These scripts are aimed at retrieving dataset titles, two descriptions
+The following shows how the functions can be used to collect metadata on
+the datasets available from each source.  
+- These scripts are aimed at retrieving dataset titles, two descriptions
 (long and short), column titles, unique non-numeric column values, and
-the release date / date of last update.
+the release date / date of last update.  
+- Titles and descriptions are given as strings, columns as a list, and
+unique column values as a dictionary (with the key being the column
+title).
 
 ### ONS Functions
 
 > ONS functions include: get_ONS_datasets_titles_descriptions(),
 > get_ONS_long_description(), get_ONS_datasets_urls(), find_ONS_cols(),
-> find_ONS_cols_and_unique_vals(). For more information check the
-> specific documentation for the ONS functions.
+> find_ONS_cols_and_unique_vals().
 
 ``` python
 from database_compendium.utils.ONS_scraper_functions import *
@@ -76,9 +81,99 @@ print('\nLatest_release: ', latest_release)
 
 ### Nomis Functions
 
+> Nomis functions include: get_nomis_datasets_titles_descriptions(),
+> get_nomis_dataset_parameters(), and get_nomis_last_updated().
+
+``` python
+from database_compendium.utils.Nomis_scraper_functions import *
+
+# Titles, Descriptions, and long Descriptions
+titles, descriptions, l_descriptions = get_nomis_datasets_titles_descriptions()
+
+# Unfortunately the Nomis api doesn't currently have a way of collecting columns from a dataset without specifying parameters 
+# before hand. I use a blank array so the data fits in a combined dataframe with the data from other sources.
+cols = np.empty(len(titles))
+
+# Dataset Unique parameters
+params = get_nomis_datasets_parameters()
+
+# Most recent release date
+latest_release = get_nomis_last_updated()
+```
+
 ### Insolvency Functions
 
+> The insolvency statistics are released as an excel file once a month,
+> this means most of there are fewer functions as almost all the data
+> needed is in said file. Functions include: get_insolvency_stats(),
+> get_mis_description(), and get_mis_last_updated().
+
+``` python
+from database_compendium.utils.insolvency_stats_scrapers import *
+
+# Insolvency stats are given as a dictionary of dataframes where the key is the dataset title
+insolvency_stats, long_desc = get_insolvency_stats()
+titles = list(insolvency_stats.keys())
+
+# The descriptions and latest releases are all the same
+description = get_mis_description()
+latest_release = get_mis_last_updated()
+
+# Dataset columns and unique column values
+cols = list(insolvency_stats[titles[0]].columns)
+col_data = get_insolvency_unique_column_vals(insolvency_stats[titles[0]])
+```
+
 ### Police Data Functions
+
+> The police data is a bit more awkward as it requires either a latitude
+> and longitude or a poly-area which is made up of latitude and
+> longitude pairs. In an attempt to make things easier the
+> get_constituency_coordinates() function was added which returns a
+> dictionary containing every westminster parliamentary constituency and
+> four coordinates as a very low res poly-area. For those with no
+> location, the search is done by police force. Functions include:
+> get_constituency_coordinates(), get_street_level_crimes(),
+> get_crimes_no_loc(), get_searches_no_loc.
+
+``` python
+from database_compendium.utils.police_data_scrapers import *
+
+# Coordinates for all constituencies (UK) - for a list of contituency names use constituency_coords.keys()
+constituency_coords = get_constituency_coordinates()
+
+street_level_crimes, sl_last_updated = get_street_level_crimes(constituency_coords['Bethnal Green and Bow'], '2023-03', 'poly')
+stop_searches, ss_last_updated = get_stop_searches(constituency_coords['Bethnal Green and Bow'], '2023-03', 'poly')
+
+no_loc_crimes = get_crimes_no_loc('metropolitan', '2023-03')
+searches_no_loc = get_searches_no_loc('metropolitan', '2023-03')
+
+# Given a dataset gets unique column values - done individually 
+col_data = get_unique_col_vals(street_level_crimes)
+
+# Columns are the keys from the unique column values 
+cols = col_data.keys()
+```
+
+### NHS Quality and Outcomes
+
+> As with the insolvency stats, this comes as an excel file. Functions
+> include: get_NHS_qualityOutcomes(),
+> get_qualityOutcomes_uniqueColumnValues
+
+``` python
+from database_compendium.utils.NHS_QualityOutcomes_scrapers import *
+
+# Returns dictionary of dataframes.
+# The latest release and long description are both the same for all datasets in this file
+NHS_quality_outcomes, long_description, latest_release = get_NHS_qualityOutcomes()
+
+# Datasets Titles
+titles = list(NHS_quality_outcomes.keys())
+
+sheet = NHS_quality_outcomes[titles[0]]
+cols, uniqueParams = get_qualityOutcomes_uniqueColumnValues(sheet)
+```
 
 ## Notes
 
@@ -94,3 +189,6 @@ Please note that the provided documentation is a general guide based on
 the information available in the code snippet. You might need to adjust
 the documentation according to the specific needs of your project and
 any further developments made to the code.
+
+For more information on the functions and the how the code works check
+the functions files.
