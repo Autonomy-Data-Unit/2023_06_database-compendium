@@ -32,7 +32,6 @@ def createMetadata():
         except:
             cols.append('')
     
-    
         try:
             col_data.append(osf.find_ONS_cols_and_unique_vals(url))
         except:
