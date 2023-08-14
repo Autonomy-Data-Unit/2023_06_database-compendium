@@ -92,7 +92,8 @@ export function ForceGraph(
   node
     .transition()
     .duration(1500)
-    .attr("r", (d) => (d.id === selectedNode ? 15 : nodeRadius));
+    .attr("r", (d) => (d.id === selectedNode ? 15 : nodeRadius(d)))
+    .attr("id", (d) => d.id);
 
   const simulation = d3
     .forceSimulation(nodes)

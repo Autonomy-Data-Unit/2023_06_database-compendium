@@ -128,39 +128,6 @@ export function setupEventListeners(
     datasetUsed.selectedNode = selectedNode;
   }
 
-  /**************
-  // datasetUsed = "specificData";
-
-  // Clicking on a node shows every connection in the dataset not just strong connections
-  circles.on("click", function (_, node) {
-    // The new graph will start with edges visible so the checkbox should be ticked
-    document.getElementById("edges-checkbox").checked = true;
-
-    // By default all connections are shown
-    slider.value = 0;
-
-    // Finding nodes which are directly connected to the node that was clicked on
-    const selectedNode = node.id;
-
-    var data = getSecondDegreeData(transformedEdgeData, nodes, selectedNode);
-    var newNodes = data[0];
-    var secondDegreeData = data[1];
-
-    svg.selectAll("*").remove();
-
-    ForceGraph(
-      { nodes: newNodes, links: secondDegreeData },
-      { ...degreesSeperation_settingObj, selectedNode }
-    );
-
-    datasetUsed.value = "secondDegreeData";
-    datasetUsed.selectedNode = selectedNode;
-
-    // Highlighting the selected node
-    // svg.selectAll("circle").attr("r", (d) => (d.id === selectedNode ? 11 : 8));
-  });
-  *****************/
-
   // Remove any existing event listeners
   circles.on("click", null);
 
@@ -203,10 +170,12 @@ export function setupData(edgeData, titles, minWeight, width, height) {
   };
 }
 
-export function searchbar(svg, titles) {
+export function searchbar(svg, titles, getLinkCount) {
   document.getElementById("submit-search").addEventListener("click", () => {
     var searchbar = document.getElementById("search");
     const circles = svg.selectAll("circle");
+
+    const linkCount = getLinkCount(); // Doing this ensures we get the most up-to-date linkCount
 
     circles.each(function () {
       if (select(this).classed("group-0")) {
@@ -216,7 +185,9 @@ export function searchbar(svg, titles) {
       } else if (select(this).classed("group-2")) {
         select(this).attr("r", 8).attr("fill", "#9DCAEB");
       } else {
-        select(this).attr("r", 4).attr("fill", "#9DCAEB");
+        select(this)
+          .attr("r", Math.sqrt(linkCount[select(this).attr("id")] + 8))
+          .attr("fill", "#9DCAEB");
       }
     });
 
@@ -270,3 +241,16 @@ export const getConnectedNodes = function (transformedEdgeData, nodes) {
 
   return connectedNodes;
 };
+
+export function countLinks(specificData) {
+  // Create an empty object to hold the link counts
+  let linkCount = {};
+
+  // Go through each link and increment the count for both source and target
+  specificData.forEach((link) => {
+    linkCount[link.source] = (linkCount[link.source] || 0) + 1;
+    linkCount[link.target] = (linkCount[link.target] || 0) + 1;
+  });
+
+  return linkCount;
+}

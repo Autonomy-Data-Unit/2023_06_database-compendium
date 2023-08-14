@@ -11,6 +11,7 @@ import {
   setupEventListeners,
   setupData,
   searchbar,
+  countLinks,
 } from "./graphSettingOptions.js";
 
 // Initialising variables
@@ -87,7 +88,7 @@ const svg = create("svg")
 var graphSettingsObj = {
   width: width,
   height: height,
-  nodeRadius: 4,
+  // nodeRadius: 4,
   nodeStroke: "#181818", // new addition for dark theme
   nodeFill: "#9DCAEB",
   colors: ["#FF964F", "#C3B1E1", "#9DCAEB"],
@@ -104,20 +105,25 @@ var graphSettingsObj = {
 var degreesSeperation_settingObj = graphSettingsObj;
 degreesSeperation_settingObj = {
   ...degreesSeperation_settingObj,
-  nodeRadius: 8,
+  nodeRadius: () => 8,
   nodeGroup: (d) => d.group,
   nodeGroups: [0, 1, 2],
   linkStrokeWidth: (d) => Math.max(d.weight / 5, 0.5),
   nodeTitle: (d) => `${d.title}`, //\nID: ${d.group}`,
-  nodeStrength: -12,
+  nodeStrength: -5,
 };
 
 const main = async (specificData, nodes) => {
   var newNodes = filterNodes(specificData, nodes); // Leaving out nodes that have no connections
 
+  var linkCount = countLinks(specificData);
+
   const graph = ForceGraph(
-    { nodes: newNodes, links: specificData }, //
-    graphSettingsObj
+    { nodes: newNodes, links: specificData },
+    {
+      ...graphSettingsObj,
+      nodeRadius: (d) => Math.sqrt(linkCount[d.id] + 8) || 4,
+    }
   );
 
   // append the created svg to the body
@@ -136,7 +142,7 @@ const main = async (specificData, nodes) => {
 main(specificData, nodes);
 
 toggleEdges(svg);
-searchbar(svg, titles);
+searchbar(svg, titles, () => countLinks(specificData));
 
 // Add zoom
 const zoomInOut = zoom()
@@ -155,7 +161,6 @@ document.getElementById("resetButton").addEventListener("click", resetGraph);
 function resetGraph() {
   svg.selectAll("*").remove();
   edgesCheckbox.checked = true;
-  slider.disabled = false;
   slider.value = 10;
   selectedNode = null;
   datasetUsed.value = "specificData";
@@ -170,9 +175,6 @@ the data used.
 slider.addEventListener("mouseup", function () {
   minWeight = this.value;
 
-  // console.log(selectedNode);
-  // console.log(minWeight);
-
   svg.selectAll("*").remove();
 
   if (datasetUsed.value === "specificData") {
@@ -183,10 +185,15 @@ slider.addEventListener("mouseup", function () {
     );
 
     var newNodes = filterNodes(specificData, nodes);
+    var linkCount = countLinks(specificData);
 
     ForceGraph(
       { nodes: newNodes, links: specificData },
-      { ...graphSettingsObj, selectedNode }
+      {
+        ...graphSettingsObj,
+        selectedNode,
+        nodeRadius: (d) => Math.sqrt(linkCount[d.id] + 8) || 4,
+      }
     );
     setupEventListeners(
       slider,
