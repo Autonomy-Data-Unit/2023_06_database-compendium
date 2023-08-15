@@ -36,7 +36,7 @@ title).
 > find_ONS_cols_and_unique_vals().
 
 ``` python
-from database_compendium.utils.ONS_scraper_functions import *
+from database_compendium.core.ONS_scraper_functions import *
 
 # Titles and Descriptions
 titles, descriptions = get_ONS_datasets_titles_descriptions()
@@ -85,7 +85,7 @@ print('\nLatest_release: ', latest_release)
 > get_nomis_dataset_parameters(), and get_nomis_last_updated().
 
 ``` python
-from database_compendium.utils.Nomis_scraper_functions import *
+from database_compendium.core.Nomis_scraper_functions import *
 
 # Titles, Descriptions, and long Descriptions
 titles, descriptions, l_descriptions = get_nomis_datasets_titles_descriptions()
@@ -109,7 +109,7 @@ latest_release = get_nomis_last_updated()
 > get_mis_description(), and get_mis_last_updated().
 
 ``` python
-from database_compendium.utils.insolvency_stats_scrapers import *
+from database_compendium.core.insolvency_stats_scrapers import *
 
 # Insolvency stats are given as a dictionary of dataframes where the key is the dataset title
 insolvency_stats, long_desc = get_insolvency_stats()
@@ -137,15 +137,15 @@ col_data = get_insolvency_unique_column_vals(insolvency_stats[titles[0]])
 > get_crimes_no_loc(), get_searches_no_loc.
 
 ``` python
-from database_compendium.utils.police_data_scrapers import *
+from database_compendium.core.police_data_scrapers import *
 
 # Coordinates for all constituencies (UK) - for a list of contituency names use constituency_coords.keys()
 constituency_coords = get_constituency_coordinates()
 
-street_level_crimes, sl_last_updated = get_street_level_crimes(constituency_coords['Bethnal Green and Bow'], '2023-03', 'poly')
+street_level_crimes, sl_last_updated = get_street_level_crimes(constituency_coords['Bethnal Green and Bow'], date='2023-03', loctype='poly')
 stop_searches, ss_last_updated = get_stop_searches(constituency_coords['Bethnal Green and Bow'], '2023-03', 'poly')
 
-no_loc_crimes = get_crimes_no_loc('metropolitan', '2023-03')
+no_loc_crimes = get_crimes_no_loc(force='metropolitan', date='2023-03')
 searches_no_loc = get_searches_no_loc('metropolitan', '2023-03')
 
 # Given a dataset gets unique column values - done individually 
@@ -162,7 +162,7 @@ cols = col_data.keys()
 > get_qualityOutcomes_uniqueColumnValues
 
 ``` python
-from database_compendium.utils.NHS_QualityOutcomes_scrapers import *
+from database_compendium.core.NHS_QualityOutcomes_scrapers import *
 
 # Returns dictionary of dataframes.
 # The latest release and long description are both the same for all datasets in this file
@@ -174,6 +174,63 @@ titles = list(NHS_quality_outcomes.keys())
 sheet = NHS_quality_outcomes[titles[0]]
 cols, uniqueParams = get_qualityOutcomes_uniqueColumnValues(sheet)
 ```
+
+### Generating a combined metadata dataset
+
+> This combines all the functions to create a complete dataset
+> containing metadata for every dataset which can then be used to
+> compare datasets in various ways. The prepare_identicalColData()
+> function matches datasets by identical columns and rates the
+> connections based on rarity and the total columns they have in common.
+
+``` python
+from database_compendium.core.generate_Metadata import *
+
+# Generate metadata
+metadata_df = createMetadata()
+
+# Find connections between dataset using identical columns, format in a way the D3 code can 
+# understand and save (if you want to). Saves to the data file as a json
+prepare_identicalColData(metadata_df)
+```
+
+### Extras
+
+- <b>cos_similarity()</b> - takes a dataframe (each row is a vector)(the
+  first column can contain labels), the index of the row you want to
+  compare, and the number of most similar datasets you want to retrieve.
+  Calculates the cosine similarity between the compare row and every
+  other row and the results stored and the top n results are returned.
+- <b>svm_similarity()</b> - takes the same input as cos_similarity().
+  Calculates the svm similarity between the compare row and every other
+  row and the results stored and the top n results are returned.
+- <b>createColsList()</b> - takes the metadata dataframe and creates a
+  list of lists containing the unique column titles for each dataset
+  (titles that are the same with minor punctuational differences are
+  considered equal)
+- <b>find_identical_cols()</b> - takes the column list created by
+  createColsList() and the index of the dataset you want to compare and
+  returns a dataframe containing the each dataset, the number of columns
+  shared with the dataset you’re comparing it with and a list of the
+  shared columns.
+- <b>scoreConnections()</b> - takes the metadata dataframe, the column
+  list created by createColsList(), then theres also the option to
+  choose an alternative ‘alt’ method of scoring weight and score ‘rare’
+  connections more highly which is set to True by default. This returns
+  a dataframe containing every connectione with the source and target
+  datasets plus the weight of the connection between the two.
+- <b>formatForD3()</b> - takes a list of titles for the datasets, the
+  scored connections (from scoreConnections function), the cutoff (the
+  minimum strength you want the connections to be (default 0)), whether
+  you want to save the file (True/False) and the name of the saved file.
+- <b>find_similar_cols()</b> - just like find_identical_cols this
+  function takes the columns list and the index of the compare dataset,
+  however, this purposely ignores identical column names and instead
+  uses fuzzy string matching to find columns which could mean the same
+  thing but are named slightly differently.
+- <b>plot_network()</b> - generates a network diagram when given a
+  pandas edgelist. Also takes a True/False input which toggles the edges
+  to improve performance.
 
 ## Notes
 
