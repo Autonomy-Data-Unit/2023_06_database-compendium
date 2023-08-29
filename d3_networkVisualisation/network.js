@@ -98,13 +98,13 @@ export function ForceGraph(
   const simulation = d3
     .forceSimulation(nodes)
     .alpha(0.5) //        An attempt
-    .alphaDecay(0.02) //  to improve
-    .alphaTarget(0) //    performance
+    .alphaDecay(0.01) //  to improve
+    .alphaTarget(0.01) //    performance
     .force("link", forceLink)
     .force("charge", forceNode)
     .force("center", d3.forceCenter())
     .tick(50)
-    .alphaMin(0.02) ///
+    .alphaMin(0.001) ///
     .on("tick", ticked);
 
   node.call(drag(simulation)); // Needs to be after simulation is defined to work

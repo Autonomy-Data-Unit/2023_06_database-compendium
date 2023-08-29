@@ -15,8 +15,8 @@ import {
 } from "./graphSettingOptions.js";
 
 // Initialising variables
-const width = 2 * window.innerWidth * 0.9;
-const height = 2 * window.innerHeight * 0.85;
+const width = window.innerWidth * 0.9;
+const height = window.innerHeight * 0.85;
 var minWeight = 10;
 var selectedNode = null;
 var edgeData = edgeData_cols_Alt;
@@ -110,7 +110,7 @@ degreesSeperation_settingObj = {
   nodeGroups: [0, 1, 2],
   linkStrokeWidth: (d) => Math.max(d.weight / 5, 0.5),
   nodeTitle: (d) => `${d.title}`, //\nID: ${d.group}`,
-  nodeStrength: -5,
+  nodeStrength: -4,
 };
 
 const main = async (specificData, nodes) => {
