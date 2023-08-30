@@ -24,7 +24,13 @@ body {
     width: 98vw;
 }
 
-#checkbox-container, 
+#nodeTitle {
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+}
+
+#checkbox-container,
 #range-container,
 #searchbar {
     padding: 0.5rem 1rem 0.5rem 1rem;

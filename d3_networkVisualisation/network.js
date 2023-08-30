@@ -159,5 +159,17 @@ export function ForceGraph(
       .on("end", dragended);
   }
 
+  const nodeTitleElement = document.getElementById("nodeTitle");
+
+  if (T) {
+    node.on("mouseover", function (event, d) {
+      nodeTitleElement.textContent = T[d.index];
+    });
+
+    node.on("mouseout", function () {
+      nodeTitleElement.textContent = ""; // Clear the content when not hovering
+    });
+  }
+
   return Object.assign(svg.node(), { scales: { color } });
 }
