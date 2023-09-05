@@ -4,7 +4,7 @@ import { ForceGraph } from "./network.js";
 import edgeData_cols from "../nbs/data/identicalColumns_scoredByRarity_mt5.json" assert { type: "json" };
 import edgeData_cols_Alt from "../nbs/data/identicalColumns_scoredByRarity_alt.json" assert { type: "json" };
 import edgeData_embeddings from "../nbs/data/descriptionEmbeddings_t5pct.json" assert { type: "json" };
-import dataTitlesId from "../nbs/data/datasets_titles_ids.json" assert { type: "json" };
+import dataTitlesId from "../nbs/data/datasets_title_id.json" assert { type: "json" };
 import {
   getSecondDegreeData,
   toggleEdges,
@@ -16,7 +16,7 @@ import {
 
 // Initialising variables
 const width = window.innerWidth * 0.9;
-const height = window.innerHeight * 0.85;
+const height = window.innerHeight;
 var minWeight = 10;
 var selectedNode = null;
 var edgeData = edgeData_cols_Alt;
@@ -71,7 +71,7 @@ dd.onchange = () => {
 
     // Resetting the graph with the new data and updating the slider to match the range of the connection weights
     resetGraph();
-    slider.setAttribute("min", "2");
+    slider.setAttribute("min", "0");
     slider.setAttribute("step", "0.2");
   }
 };

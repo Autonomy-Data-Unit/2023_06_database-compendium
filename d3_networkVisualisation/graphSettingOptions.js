@@ -154,9 +154,10 @@ export function setupData(edgeData, titles, minWeight, width, height) {
     (obj) => obj.weight >= minWeight
   );
 
+  const numUniqueValues = Object.keys(titles).length;
   // Randomly initialise node positions with normal distribution
   // nodeData needs entries in the form { id: 0, x: 10, y: 10 }
-  const nodeData = Array.from({ length: 1923 }, (_, i) => ({
+  const nodeData = Array.from({ length: numUniqueValues }, (_, i) => ({
     id: i, // id used to refer to each node
     title: titles[i],
     x: Math.min(Math.max(randomNormal(0.5, 0.15)(), 0), 1) * (width - 16) + 8,
