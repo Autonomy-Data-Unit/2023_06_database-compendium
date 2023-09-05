@@ -23,11 +23,12 @@ def createColsList(metadata_df):
     for row in metadata_df.loc[:, ['Columns', 'Unique_parameters']].values:
         temp_col_list = []
         # print(c)
-        # c+=1
+        c+=1
     
         # Column titles
         if type(row[0]) == str:
-            temp_col_list += ast.literal_eval(row[0])
+            if type(ast.literal_eval(row[0])) == str:
+                temp_col_list += ast.literal_eval(row[0])
         else:
             temp_col_list.append(row[0])
     
